@@ -2,7 +2,9 @@ import mongoose from "mongoose";
 import dotenv from "dotenv";
 import colors from "colors";
 import users from "./data/users.js";
+import places from "./data/places.js";
 import User from "./models/userModel.js";
+import Place from "./models/placeModel.js";
 import connectDB from "./config/db.js";
 
 dotenv.config();
@@ -11,11 +13,20 @@ connectDB();
 
 const importData = async () => {
   try {
+    await Place.deleteMany();
     await User.deleteMany();
 
-    await User.insertMany(users);
+    const createdUsers = await User.insertMany(users);
 
-    console.log("User Data Imported!".green.inverse);
+    const adminUser = createdUsers[0]._id;
+
+    const samplePlaces = places.map((place) => {
+      return { ...place, user: adminUser };
+    });
+
+    await Place.insertMany(samplePlaces);
+
+    console.log("Data Imported!".green.inverse);
     process.exit();
   } catch (error) {
     console.error(`${error}`.red.inverse);
@@ -25,9 +36,10 @@ const importData = async () => {
 
 const destroyData = async () => {
   try {
+    await Place.deleteMany();
     await User.deleteMany();
 
-    console.log("User Data Destroyed!".red.inverse);
+    console.log("Data Destroyed!".red.inverse);
     process.exit();
   } catch (error) {
     console.error(`${error}`.red.inverse);
