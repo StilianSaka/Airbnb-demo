@@ -9,7 +9,6 @@ import SearchBox from "./SearchBox";
 import logo from "../assets/logo.png";
 
 const Header = () => {
-
   const { userInfo } = useSelector((state) => state.auth);
 
   const dispatch = useDispatch();

@@ -24,12 +24,9 @@ import Meta from "../components/Meta";
 const PlaceScreen = () => {
   const { id: placeId } = useParams();
 
-
-
   const [qty, setQty] = useState(1);
   const [rating, setRating] = useState(0);
   const [comment, setComment] = useState("");
-
 
   const {
     data: place,
